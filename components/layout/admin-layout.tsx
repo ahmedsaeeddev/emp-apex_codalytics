@@ -7,10 +7,11 @@ import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Users, ClipboardList, Archive, LogOut, Menu } from "lucide-react" // Added Menu icon
+import { Users, ClipboardList, Archive, LogOut, Menu } from "lucide-react"
 import { getCurrentUser, signOut } from "@/lib/auth"
-import type { Employee } from "@/lib/firebase" // Import Employee type from firebase
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet" // Added Sheet for mobile menu
+import type { Employee } from "@/lib/firebase"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+// Removed: import { ModeToggle } from "@/components/mode-toggle"
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -20,7 +21,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const [currentUser, setCurrentUser] = useState<Employee | null>(null)
   const router = useRouter()
   const pathname = usePathname()
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false) // State for mobile menu
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -50,68 +51,78 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col lg:flex-row">
       {/* Mobile Header (visible on small screens) */}
-      <header className="bg-white border-b border-slate-200 p-4 flex items-center justify-between lg:hidden">
-        <h1 className="text-xl font-semibold text-slate-900">Admin Panel</h1>
-        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">Toggle navigation menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-64 bg-white p-0">
-            <div className="p-6 border-b border-slate-200">
-              <h1 className="text-xl font-semibold text-slate-900">Admin Panel</h1>
-              <p className="text-sm text-slate-600 mt-1">Employee Management</p>
-            </div>
-            <nav className="px-4 py-2 space-y-2">
-              {navigation.map((item) => {
-                const Icon = item.icon
-                const isActive = pathname === item.href
-                return (
-                  <Link key={item.name} href={item.href} onClick={() => setIsMobileMenuOpen(false)}>
+      <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-4 flex items-center justify-between lg:hidden">
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">Admin Panel</h1>
+        <div className="flex items-center gap-2">
+          {/* Removed: <ModeToggle /> */}
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle navigation menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-64 bg-white dark:bg-slate-800 p-0">
+              <div className="p-6 border-b border-slate-200 dark:border-slate-700">
+                <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">Admin Panel</h1>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Employee Management</p>
+              </div>
+              <nav className="px-4 py-2 space-y-2">
+                {navigation.map((item) => {
+                  const Icon = item.icon
+                  const isActive = pathname === item.href
+                  return (
+                    <Link key={item.name} href={item.href} onClick={() => setIsMobileMenuOpen(false)}>
+                      <Button
+                        variant={isActive ? "default" : "ghost"}
+                        className={`w-full justify-start ${
+                          isActive
+                            ? "bg-blue-600 text-white hover:bg-blue-700"
+                            : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+                        }`}
+                      >
+                        <Icon className="mr-3 h-4 w-4" />
+                        {item.name}
+                      </Button>
+                    </Link>
+                  )
+                })}
+              </nav>
+              <div className="absolute bottom-4 left-4 right-4">
+                <Card className="p-4 bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-slate-900 dark:text-slate-50">{currentUser.fullName}</p>
+                      <p className="text-xs text-slate-600 dark:text-slate-400">{currentUser.position}</p>
+                    </div>
                     <Button
-                      variant={isActive ? "default" : "ghost"}
-                      className={`w-full justify-start ${
-                        isActive ? "bg-blue-600 text-white hover:bg-blue-700" : "text-slate-700 hover:bg-slate-100"
-                      }`}
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleSignOut}
+                      className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50"
                     >
-                      <Icon className="mr-3 h-4 w-4" />
-                      {item.name}
+                      <LogOut className="h-4 w-4" />
                     </Button>
-                  </Link>
-                )
-              })}
-            </nav>
-            <div className="absolute bottom-4 left-4 right-4">
-              <Card className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-slate-900">{currentUser.fullName}</p>
-                    <p className="text-xs text-slate-600">{currentUser.position}</p>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleSignOut}
-                    className="text-slate-600 hover:text-slate-900"
-                  >
-                    <LogOut className="h-4 w-4" />
-                  </Button>
-                </div>
-              </Card>
-            </div>
-          </SheetContent>
-        </Sheet>
+                </Card>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </header>
 
       {/* Sidebar (visible on large screens) */}
-      <div className="hidden lg:block w-64 bg-white border-r border-slate-200 min-h-screen flex-shrink-0">
-        <div className="p-6">
-          <h1 className="text-xl font-semibold text-slate-900">Admin Panel</h1>
-          <p className="text-sm text-slate-600 mt-1">Employee Management</p>
+      <div className="hidden lg:block w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 min-h-screen flex-shrink-0">
+        <div className="p-6 flex items-center justify-between">
+          {" "}
+          {/* Adjusted for toggle */}
+          <div>
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">Admin Panel</h1>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Employee Management</p>
+          </div>
+          {/* Removed: <ModeToggle /> */}
         </div>
 
         <nav className="px-4 space-y-2">
@@ -123,7 +134,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 <Button
                   variant={isActive ? "default" : "ghost"}
                   className={`w-full justify-start ${
-                    isActive ? "bg-blue-600 text-white hover:bg-blue-700" : "text-slate-700 hover:bg-slate-100"
+                    isActive
+                      ? "bg-blue-600 text-white hover:bg-blue-700"
+                      : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
                   }`}
                 >
                   <Icon className="mr-3 h-4 w-4" />
@@ -134,14 +147,19 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           })}
         </nav>
 
-        <div className="absolute bottom-4 left-4 right-4">
-          <Card className="p-4">
+        <div className="absolute bottom-0 left-0 right-0">
+          <Card className="p-4 bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-slate-900">{currentUser.fullName}</p>
-                <p className="text-xs text-slate-600">{currentUser.position}</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-50">{currentUser.fullName}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400">{currentUser.position}</p>
               </div>
-              <Button variant="ghost" size="sm" onClick={handleSignOut} className="text-slate-600 hover:text-slate-900">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleSignOut}
+                className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50"
+              >
                 <LogOut className="h-4 w-4" />
               </Button>
             </div>

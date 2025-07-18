@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { signIn } from "@/lib/auth"
+import { PasswordInput } from "@/components/password-input" // Import PasswordInput
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -48,16 +49,20 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-semibold text-slate-900">Employee Management System</CardTitle>
-          <CardDescription className="text-slate-600">Sign in to access your dashboard</CardDescription>
+          <CardTitle className="text-2xl font-semibold text-slate-900 dark:text-slate-50">
+            Employee Management System
+          </CardTitle>
+          <CardDescription className="text-slate-600 dark:text-slate-400">
+            Sign in to access your dashboard
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-slate-700">
+              <Label htmlFor="email" className="text-slate-700 dark:text-slate-300">
                 Email Address
               </Label>
               <Input
@@ -67,22 +72,21 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
-                className="border-slate-300 focus:border-blue-500"
+                className="border-slate-300 dark:border-slate-600 focus:border-blue-500 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-50"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-700">
+              <Label htmlFor="password" className="text-slate-700 dark:text-slate-300">
                 Password
               </Label>
-              <Input
+              <PasswordInput // Using PasswordInput here
                 id="password"
-                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 required
-                className="border-slate-300 focus:border-blue-500"
+                className="border-slate-300 dark:border-slate-600 focus:border-blue-500 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-50"
               />
             </div>
 

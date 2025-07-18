@@ -11,9 +11,10 @@ import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Plus, Mail, Phone, User } from "lucide-react"
 import AdminLayout from "@/components/layout/admin-layout"
-import { db, auth, type Employee } from "@/lib/firebase" // Import db and auth
+import { db, auth, type Employee } from "@/lib/firebase"
 import { collection, getDocs, query, where, doc, setDoc } from "firebase/firestore"
 import { createUserWithEmailAndPassword } from "firebase/auth"
+import { PasswordInput } from "@/components/password-input" // Import PasswordInput
 
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState<Employee[]>([])
@@ -117,7 +118,7 @@ export default function EmployeesPage() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-slate-600">Loading employees...</div>
+          <div className="text-slate-600 dark:text-slate-400">Loading employees...</div>
         </div>
       </AdminLayout>
     )
@@ -128,8 +129,8 @@ export default function EmployeesPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-slate-900">Employees</h1>
-            <p className="text-slate-600 mt-1">Manage your team members</p>
+            <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-50">Employees</h1>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">Manage your team members</p>
           </div>
 
           <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
@@ -139,7 +140,7 @@ export default function EmployeesPage() {
                 Add Employee
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-md bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50">
               <DialogHeader>
                 <DialogTitle>Add New Employee</DialogTitle>
               </DialogHeader>
@@ -152,6 +153,7 @@ export default function EmployeesPage() {
                     onChange={(e) => setNewEmployee({ ...newEmployee, fullName: e.target.value })}
                     placeholder="Enter full name"
                     required
+                    className="bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-50"
                   />
                 </div>
 
@@ -164,18 +166,19 @@ export default function EmployeesPage() {
                     onChange={(e) => setNewEmployee({ ...newEmployee, email: e.target.value })}
                     placeholder="Enter email address"
                     required
+                    className="bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-50"
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="password">Password *</Label>
-                  <Input
+                  <PasswordInput // Using PasswordInput here
                     id="password"
-                    type="password"
                     value={newEmployee.password}
                     onChange={(e) => setNewEmployee({ ...newEmployee, password: e.target.value })}
                     placeholder="Must be at least 6 characters"
                     required
+                    className="bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-50"
                   />
                 </div>
 
@@ -186,6 +189,7 @@ export default function EmployeesPage() {
                     value={newEmployee.contactNumber}
                     onChange={(e) => setNewEmployee({ ...newEmployee, contactNumber: e.target.value })}
                     placeholder="Enter contact number"
+                    className="bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-50"
                   />
                 </div>
 
@@ -197,6 +201,7 @@ export default function EmployeesPage() {
                     onChange={(e) => setNewEmployee({ ...newEmployee, position: e.target.value })}
                     placeholder="Enter job position"
                     required
+                    className="bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-50"
                   />
                 </div>
 
@@ -208,6 +213,7 @@ export default function EmployeesPage() {
                     variant="outline"
                     onClick={() => setShowAddDialog(false)}
                     disabled={addingEmployee}
+                    className="bg-transparent dark:bg-slate-700 text-slate-700 dark:text-slate-50 hover:bg-slate-100 dark:hover:bg-slate-600"
                   >
                     Cancel
                   </Button>
@@ -223,24 +229,24 @@ export default function EmployeesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {employees.map((employee) => (
             <Link key={employee.uid} href={`/admin/employee/${employee.uid}`}>
-              <Card className="hover:shadow-md transition-shadow cursor-pointer border-slate-200">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg text-slate-900 flex items-center">
-                    <User className="mr-2 h-5 w-5 text-slate-600" />
+                  <CardTitle className="text-lg text-slate-900 dark:text-slate-50 flex items-center">
+                    <User className="mr-2 h-5 w-5 text-slate-600 dark:text-slate-400" />
                     {employee.fullName}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  <div className="flex items-center text-sm text-slate-600">
-                    <Mail className="mr-2 h-4 w-4" />
-                    {employee.email}
+                  <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+                    <Mail className="mr-2 h-4 w-4 flex-shrink-0" /> {/* Added flex-shrink-0 */}
+                    <span className="truncate">{employee.email}</span> {/* Added truncate */}
                   </div>
-                  <div className="flex items-center text-sm text-slate-600">
+                  <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                     <Phone className="mr-2 h-4 w-4" />
                     {employee.contactNumber || "No contact number"}
                   </div>
                   <div className="mt-3">
-                    <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                    <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full dark:bg-blue-900 dark:text-blue-200">
                       {employee.position}
                     </span>
                   </div>
@@ -252,12 +258,12 @@ export default function EmployeesPage() {
 
         {employees.length === 0 && (
           <div className="text-center py-12">
-            <User className="mx-auto h-12 w-12 text-slate-400" />
-            <h3 className="mt-2 text-sm font-medium text-slate-900">No employees found</h3>
-            <p className="mt-1 text-sm text-slate-500">
+            <User className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-600" />
+            <h3 className="mt-2 text-sm font-medium text-slate-900 dark:text-slate-50">No employees found</h3>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               {loading ? "Loading..." : "Get started by adding your first employee."}
             </p>
-            <div className="mt-4 text-xs text-slate-400">
+            <div className="mt-4 text-xs text-slate-400 dark:text-slate-500">
               Make sure Firebase is configured and you have added employees.
             </div>
           </div>
