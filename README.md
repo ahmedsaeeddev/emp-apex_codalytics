@@ -1,30 +1,56 @@
-# Employee management system
+# Employee Management System
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+A robust and intuitive web application designed to streamline employee and task management within an organization. This system provides distinct interfaces for administrators to manage employees and assign tasks, and for employees to view and update their assigned work.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/apexcodalytics-5757s-projects/v0-employee-management-system)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/nhVSVVYWko1)
+## ✨ Features
 
-## Overview
+*   **User Authentication**: Secure login for both administrators and employees.
+*   **Admin Dashboard**:
+    *   View and manage a list of all employees.
+    *   Add new employees with their details and assign roles.
+    *   View and edit individual employee profiles.
+    *   Delete employee records (requires server-side Firebase Auth user deletion).
+    *   Assign new tasks to specific employees.
+    *   View and manage all active assigned tasks.
+    *   Delete assigned tasks.
+    *   View a history of expired tasks.
+*   **Employee Dashboard**:
+    *   View a list of tasks assigned to them.
+    *   Update the status of assigned tasks (limited to 2 changes per task).
+    *   View task details including description, category, and expiry.
+*   **Responsive Design**: Optimized for seamless use across various devices, from desktops to mobile phones.
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+## 🚀 Technologies Used
 
-## Deployment
+*   **Next.js**: A React framework for building full-stack web applications.
+*   **React**: A JavaScript library for building user interfaces.
+*   **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
+*   **shadcn/ui**: Reusable UI components built with Radix UI and Tailwind CSS.
+*   **Firebase Authentication**: For secure user sign-in and management.
+*   **Firestore**: A NoSQL cloud database for storing application data (employees, tasks).
+*   **Lucide React**: A collection of beautiful and customizable open-source icons.
 
-Your project is live at:
+## 🛠️ Getting Started
 
-**[https://vercel.com/apexcodalytics-5757s-projects/v0-employee-management-system](https://vercel.com/apexcodalytics-5757s-projects/v0-employee-management-system)**
+Follow these steps to set up and run the project locally.
 
-## Build your app
+### Prerequisites
 
-Continue building your app on:
+Before you begin, ensure you have the following installed:
 
-**[https://v0.dev/chat/projects/nhVSVVYWko1](https://v0.dev/chat/projects/nhVSVVYWko1)**
+*   Node.js (v18.x or higher)
+*   npm or yarn
 
-## How It Works
+### Firebase Setup
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+1.  **Create a Firebase Project**: Go to the [Firebase Console](https://console.firebase.google.com/) and create a new project.
+2.  **Enable Authentication**:
+    *   In your Firebase project, navigate to "Authentication" > "Get started".
+    *   Enable the "Email/Password" sign-in method.
+3.  **Set up Firestore Database**:
+    *   In your Firebase project, navigate to "Firestore Database" > "Create database".
+    *   Choose "Start in production mode" (you will set up security rules later).
+    *   Select a Cloud Firestore location.
+4.  **Get Firebase Configuration**:
+    *   In your Firebase project settings (Project overview -> Project settings -> Your apps), add a new web app.
+    *   Copy the Firebase configuration object (apiKey, authDomain, projectId, etc.).
