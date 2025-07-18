@@ -238,8 +238,8 @@ export default function EmployeesPage() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
-                    <Mail className="mr-2 h-4 w-4 flex-shrink-0" /> {/* Added flex-shrink-0 */}
-                    <span className="truncate">{employee.email}</span> {/* Added truncate */}
+                    <Mail className="mr-2 h-4 w-4" />
+                    {employee.email}
                   </div>
                   <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                     <Phone className="mr-2 h-4 w-4" />

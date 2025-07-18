@@ -11,7 +11,7 @@ import { Users, ClipboardList, Archive, LogOut, Menu } from "lucide-react"
 import { getCurrentUser, signOut } from "@/lib/auth"
 import type { Employee } from "@/lib/firebase"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-// Removed: import { ModeToggle } from "@/components/mode-toggle"
+import { ModeToggle } from "@/components/mode-toggle" // Import ModeToggle
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -56,7 +56,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-4 flex items-center justify-between lg:hidden">
         <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">Admin Panel</h1>
         <div className="flex items-center gap-2">
-          {/* Removed: <ModeToggle /> */}
+          <ModeToggle />
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -115,14 +115,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
       {/* Sidebar (visible on large screens) */}
       <div className="hidden lg:block w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 min-h-screen flex-shrink-0">
-        <div className="p-6 flex items-center justify-between">
-          {" "}
-          {/* Adjusted for toggle */}
-          <div>
-            <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">Admin Panel</h1>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Employee Management</p>
-          </div>
-          {/* Removed: <ModeToggle /> */}
+        <div className="p-6">
+          <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">Admin Panel</h1>
+          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Employee Management</p>
         </div>
 
         <nav className="px-4 space-y-2">
@@ -147,7 +142,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           })}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-4 left-4 right-4">
           <Card className="p-4 bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600">
             <div className="flex items-center justify-between">
               <div>
